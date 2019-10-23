@@ -9,4 +9,6 @@ public interface BooksService {
     List<Books> findAllBooks();
     Books createNewBooks(Books books);
     Optional<Books> findBooksById(Integer idBooks);
+    Books updateBooks(Books books);
+    void deleteBooks(Books books);
 }

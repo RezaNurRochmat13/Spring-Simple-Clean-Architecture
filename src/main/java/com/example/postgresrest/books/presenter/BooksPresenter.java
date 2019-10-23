@@ -48,4 +48,37 @@ public class BooksPresenter {
         map.put("message", "Books created successfully");
         return map;
     }
+
+    @PutMapping("books/{id}")
+    public Map<String, Object> updateBooks(@PathVariable Integer id,
+                                           @Valid @RequestBody Books booksPayload ) {
+        Map<String, Object> map = new HashMap<>();
+
+        Books book = bookService.findBooksById(id)
+                .orElseThrow(() -> new ResourceNotFound("Books not found with : " + id));
+
+        book.setBooksName(booksPayload.getBooksName());
+        book.setBooksAuthor(booksPayload.getBooksAuthor());
+        book.setBooksDescription(booksPayload.getBooksDescription());
+        bookService.updateBooks(book);
+
+        map.put("message", "Books updated successfully");
+        map.put("updated_book", book);
+
+        return map;
+
+    }
+
+    @DeleteMapping("books/{id}")
+    public Map<String, Object> deleteBooks(@PathVariable Integer id) {
+        Map<String, Object> map = new HashMap<>();
+
+        Books books = bookService.findBooksById(id).
+                orElseThrow(() -> new ResourceNotFound("Books not found with : " + id));
+
+        bookService.deleteBooks(books);
+
+        map.put("message", "Books deleted successfully");
+        return map;
+    }
 }

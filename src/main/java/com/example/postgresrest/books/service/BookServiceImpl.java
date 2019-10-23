@@ -27,4 +27,14 @@ public class BookServiceImpl implements BooksService {
     public Optional<Books> findBooksById(Integer idBooks) {
         return booksRepository.findById(idBooks);
     }
+
+    @Override
+    public Books updateBooks(Books books) {
+        return booksRepository.save(books);
+    }
+
+    @Override
+    public void deleteBooks(Books books) {
+        booksRepository.delete(books);
+    }
 }
