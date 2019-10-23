@@ -4,6 +4,8 @@ import com.example.postgresrest.books.model.Books;
 import com.example.postgresrest.books.service.BookServiceImpl;
 import com.example.postgresrest.exception.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -80,5 +82,10 @@ public class BooksPresenter {
 
         map.put("message", "Books deleted successfully");
         return map;
+    }
+
+    @GetMapping("books-paginate")
+    public Page<Books> getPaginateBooks(Pageable pageable) {
+        return bookService.paginateBooks(pageable);
     }
 }
