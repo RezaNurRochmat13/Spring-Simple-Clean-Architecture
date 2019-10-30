@@ -10,4 +10,5 @@ public interface UserService {
     Optional<User> findUserById(Integer idUser);
     User saveUsers(User user);
     User updateUsers(User user);
+    void deleteUser(User user);
 }

@@ -26,7 +26,6 @@ public class UserPresenter {
         map.put("total", userList.size());
         map.put("count", userList.size());
         map.put("data", userList);
-
         return map;
     }
 
@@ -37,7 +36,6 @@ public class UserPresenter {
                 Optional.ofNullable(userService.findUserById(idUser).orElseThrow(() -> new ResourceNotFound("User not found with id : " + idUser)));
 
         map.put("data", userOptional);
-
         return map;
     }
 
@@ -48,7 +46,37 @@ public class UserPresenter {
 
         map.put("message", "User created successfully");
         map.put("user_created", userPayload);
+        return map;
+    }
 
+    @PutMapping("user/{idUser}")
+    public Map<String, Object> updateUsers(@Valid @RequestBody User userPayload,
+                                           @PathVariable Integer idUser) {
+        Map<String, Object> map = new HashMap<>();
+
+        User findUsers = userService.findUserById(idUser)
+                .orElseThrow(() -> new ResourceNotFound("User not found with id : " + idUser));
+
+        findUsers.setUserName(userPayload.getUserName());
+        findUsers.setUserAge(userPayload.getUserAge());
+        findUsers.setUserAddress(userPayload.getUserAddress());
+        findUsers.setUserPhone(userPayload.getUserPhone());
+
+        userService.updateUsers(findUsers);
+
+        map.put("message", "User updated successfully");
+        return map;
+    }
+
+    @DeleteMapping("user/{idUser}")
+    public Map<String, String> deleteUsers(@PathVariable Integer idUser) {
+        Map<String, String> map = new HashMap<>();
+        User findUsers = userService.findUserById(idUser)
+                .orElseThrow(() -> new ResourceNotFound("User not found with id : " + idUser));
+
+        userService.deleteUser(findUsers);
+
+        map.put("message", "User deleted successfully");
         return map;
     }
 }
