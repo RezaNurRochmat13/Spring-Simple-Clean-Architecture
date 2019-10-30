@@ -3,6 +3,10 @@ package com.example.postgresrest.books.presenter;
 import com.example.postgresrest.books.model.Books;
 import com.example.postgresrest.books.service.BookServiceImpl;
 import com.example.postgresrest.exception.ResourceNotFound;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +18,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Api(value = "/api/v1/", description = "Bookstore API", produces = "application/json")
 @RestController
 @RequestMapping("/api/v1/")
 public class BooksPresenter {
     @Autowired
     BookServiceImpl bookService;
 
+    @ApiOperation(value = "View all list books")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieve list books"),
+            @ApiResponse(code = 400, message = "You cannot retrieve books when books is empty"),
+            @ApiResponse(code = 401, message = "You not authorized for accessing resource books")
+    })
     @GetMapping("books")
     public Map<String, Object> getAllBooks() {
         Map<String, Object> map = new HashMap<>();
